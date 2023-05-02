@@ -90,10 +90,19 @@ describe('Teste o componente <Pokedex.js />', () => {
     expect(buttonAll).toBeInTheDocument();
 
     // A Pokedéx deverá mostrar os Pokémon normalmente (sem filtros) quando o botão All for clicado;
+
+    // primeiro clica no botão eletric e verifica se o botão de next pokemon foi desabilitado
+    const buttonEletric = screen.getByRole('button', {
+      name: /electric/i,
+    });
+    const buttonNextPokemon = screen.getByRole('button', { name: /próximo pokémon/i });
+    userEvent.click(buttonEletric);
+    expect(buttonNextPokemon).toBeDisabled();
+
+    // em seguida, clica no botão All e verifica se agora todos os pokemons são renderizados, retirando-se o filtro
     userEvent.click(buttonAll);
     pokemonList.forEach(({ name }) => {
       expect(screen.getByText(name)).toBeInTheDocument();
-      const buttonNextPokemon = screen.getByRole('button', { name: /próximo pokémon/i });
       userEvent.click(buttonNextPokemon);
     });
   });
